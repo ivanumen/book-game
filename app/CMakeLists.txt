@@ -1,0 +1,5 @@
+add_subdirectory(models)
+add_subdirectory(views)
+add_subdirectory(controllers)
+add_subdirectory(util)
+
