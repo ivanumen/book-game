@@ -3,16 +3,18 @@
 #include <iostream>
 #include <vector>
 
+#include "app/util/point/point.h"
+
 
 class TMenu {
 private:
     std::vector<std::string> Options;
-    std::string Header;
+    TPoint PointLeft, PointRight;
 
 public:
     TMenu() = default;
     TMenu(const std::vector<std::string>& options);
-    TMenu(const std::vector<std::string>& options, const std::string& header);
+    TMenu(const std::vector<std::string>& options, const TPoint& pointLeft, const TPoint& pointRight);
     int Show();
 };
 

@@ -5,23 +5,21 @@
 #include "app/views/console_editor/console_editor.h"
 
 TMenu::TMenu(const std::vector<std::string>& options) : Options(options) {}
-TMenu::TMenu(const std::vector<std::string>& options, const std::string& header) : Options(options), Header(header) {}
+TMenu::TMenu(const std::vector<std::string>& options, const TPoint& pointLeft, const TPoint& pointRight) : Options(options), PointLeft(pointLeft), PointRight(pointRight){}
 
 int TMenu::Show() {
     int chosenOption = 0;
     while (1) {
-        NConsoleEditor::Clear();
-        if (Header != "") {
-            std::cout << Header << std::endl;
-        }
+        NConsoleEditor::Clear(PointLeft, PointRight);
         for (size_t i = 0; i < Options.size(); i++) {
+            NConsoleEditor::GoToXY(PointLeft.X, PointLeft.Y + i);
             if (i == chosenOption) {
                 NConsoleEditor::SetColor(NConsoleEditor::LightBlue);
-                std::cout << Options[i] << std::endl;
+                std::cout << Options[i];
                 NConsoleEditor::SetColor(NConsoleEditor::Yellow);
             }
             else {
-                std::cout << Options[i] << std::endl;
+                std::cout << Options[i];
             }
         }
         int key = NConsoleEditor::Getch();
