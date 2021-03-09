@@ -12,7 +12,7 @@
 
 void TGame::Start() {
     ReadConfig();
-    TMenu mainMenu({ "Новая игра", "Загрузка" ,"Настройки", "Эксит" });
+    TMenu mainMenu({ "Новая игра", "Загрузка" ,"Настройки", "Эксит" }, TPoint(0, 0), TPoint(100, 10));
     int value = mainMenu.Show();
     if (value == 0) {
         New();
@@ -58,10 +58,10 @@ void TGame::InitPlayer() {
 }
 
 void TGame::WritePlayer() const {
-    std::cout << "Сила: " << Player.GetStrength() << "Ловкость: " << Player.GetAgility() << "Харизма: " << Player.GetCharisma();
+    std::cout << "Сила: " << Player.GetStrength() << " " << "Ловкость: " << Player.GetAgility() << " " << "Харизма: " << Player.GetCharisma() << std::endl;
     std::cout << "Таблица удачи";
     Player.WriteLuck();
-    std::cout << "Золото:" << Player.GetGold() << "Фляга: " << Player.GetFlask() << std::endl;
+    std::cout << "Золото: " << Player.GetGold() << " " << "Фляга: " << Player.GetFlask() << std::endl;
 }
 
 void TGame::New() {
@@ -134,7 +134,8 @@ void TGame::Run() {
         for (const auto& option : level.GetOptions()) {
             options.push_back(option.second);
         }
-        TMenu menu(options, level.GetText());
+        std::cout << level.GetText() << std::endl;
+        TMenu menu(options, { 0, NConsoleEditor::GetCursorPosition().Y }, {100, static_cast<int>(options.size())});
         int key = menu.Show();
         CurrentLevel = level.GetOptions()[key].first;
     }

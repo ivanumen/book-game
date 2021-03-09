@@ -1,5 +1,6 @@
 #include "console_editor.h"
 
+#include <iostream>
 #include <windows.h>
 #include <conio.h>
 
@@ -31,6 +32,15 @@ void NConsoleEditor::GoToXY(const TPoint& point) {
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), kursor);
 }
 
+void NConsoleEditor::Clear(const TPoint& pointLeft, const TPoint& pointRight) {
+    for (int i = pointLeft.Y; i <= pointRight.Y; i++) {
+        for (int j = pointLeft.X; j <= pointRight.X; j++) {
+            GoToXY({ j, i });
+            std::cout << " ";
+        }
+    }
+}
+
 void NConsoleEditor::Clear() {
     system("cls");
 }
@@ -53,4 +63,14 @@ bool NConsoleEditor::IsUp(const int key) {
 
 bool NConsoleEditor::IsDown(const int key) {
     return key == 1080;
+}
+
+TPoint NConsoleEditor::GetCursorPosition() {
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_SCREEN_BUFFER_INFO cbsi;
+    if (!GetConsoleScreenBufferInfo(hConsole, &cbsi)) {
+        throw "Error with cursor";
+    }
+
+    return TPoint(cbsi.dwCursorPosition.X, cbsi.dwCursorPosition.Y);
 }

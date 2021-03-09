@@ -32,6 +32,8 @@ namespace NConsoleEditor {
 
     void Clear();
 
+    void Clear(const TPoint& pointLeft, const TPoint& pointRight);
+
     bool IsEnter(const int key);
 
     bool IsLeft(const int key);
@@ -41,4 +43,6 @@ namespace NConsoleEditor {
     bool IsUp(const int key);
 
     bool IsDown(const int key);
+
+    TPoint GetCursorPosition();
 };
