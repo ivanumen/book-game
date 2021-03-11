@@ -1,8 +1,12 @@
 #pragma once
 
+#include <app/models/items/item.h>
+
 #include <iostream>
 #include <tuple>
+#include <string>
 #include <vector>
+
 
 class TPlayer
 {
@@ -14,6 +18,7 @@ private:
 	int Flask;
 	std::vector<bool> Luck;
 	std::vector<std::pair<std::string, int>> Spells;
+	std::vector<TItem*> Items;
 public:
 	TPlayer();
 	void SetName(const std::string& name);
@@ -46,5 +51,8 @@ public:
 	void SpendFlask(const int flask);
 	bool HasEnoughFlask(const int flask) const;
 	void DrinkFromFlask();
+	void AddItem(const int index, TItem* item);
+	void ResizeItems(const int size);
+	void DropItem(const int index);
+	void Inventory() const;
 };
-

@@ -8,8 +8,8 @@ int main()
 {   
     //setlocale(LC_ALL, "Russian");
     NConsoleEditor::SetColor(NConsoleEditor::Yellow);
-    SetConsoleCP(1251);// установка кодовой страницы win-cp 1251 в поток ввода
-    SetConsoleOutputCP(1251); // установка кодовой страницы win-cp 1251 в поток вывода
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
     srand(time(nullptr));
     TGame game;
     game.Start();

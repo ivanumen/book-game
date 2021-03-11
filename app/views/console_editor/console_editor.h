@@ -44,5 +44,13 @@ namespace NConsoleEditor {
 
     bool IsDown(const int key);
 
+    bool IsI(const int key);
+
+    bool IsO(const int key);
+
+    bool IsP(const int key);
+
+    bool IsBackspace(const int key);
+
     TPoint GetCursorPosition();
 };

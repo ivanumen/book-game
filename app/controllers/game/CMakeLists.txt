@@ -11,4 +11,7 @@ target_link_libraries(game PUBLIC
 	level
 	player
 	json
+	items
+	spell_views
+	player_views
 )

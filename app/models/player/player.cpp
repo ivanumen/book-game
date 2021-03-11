@@ -153,3 +153,28 @@ void TPlayer::DrinkFromFlask() {
 	SpendFlask(1);
 	IncreaseStrength(2);
 }
+
+void TPlayer::AddItem(const int index, TItem* item) {
+	if (index >= Items.size()) {
+		throw "Array index out of bounds";
+	}
+	Items[index] = item;
+}
+
+void TPlayer::ResizeItems(const int size) {
+	Items.resize(size);
+}
+
+void TPlayer::DropItem(const int index) {
+	if (index >= Items.size()) {
+		throw "Array index out of bounds";
+	}
+	Items[index] = nullptr;
+}
+
+void TPlayer::Inventory() const {
+	for (const auto& item : Items) {
+
+	}
+}
+

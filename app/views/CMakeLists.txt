@@ -1,2 +1,5 @@
 add_subdirectory(console_editor)
 add_subdirectory(menu)
+add_subdirectory(player)
+add_subdirectory(spells)
+add_subdirectory(items)
