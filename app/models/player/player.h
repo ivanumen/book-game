@@ -38,6 +38,7 @@ public:
 	int GetCharisma() const;
 	int GetGold() const;
 	int GetFlask() const;
+	std::vector<std::pair<std::string, int>> GetSpells() const;
 	void IncreaseStrength(const int strength);
 	bool CheckLuck(const int index) const;
 	void WriteLuck() const;
@@ -54,5 +55,7 @@ public:
 	void AddItem(const int index, TItem* item);
 	void ResizeItems(const int size);
 	void DropItem(const int index);
-	void Inventory() const;
+	bool HasSpell(const std::string& spell) const;
+	void CastSpell(const std::string& spell);
+	void AddSpell(const std::string& spell);
 };
