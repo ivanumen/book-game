@@ -9,10 +9,10 @@ const std::string& TLevel::GetText() const {
 	return Text;
 }
 
-const std::vector<TOption>& TLevel::GetOptions() {
+const std::vector<TOption>& TLevel::GetOptions() const {
 	return Options;
 }
 
-const std::vector<std::shared_ptr<TAction>>& TLevel::GetActions() {
+const std::vector<std::shared_ptr<TAction>>& TLevel::GetActions() const {
 	return Actions;
 }

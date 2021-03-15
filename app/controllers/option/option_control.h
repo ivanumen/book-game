@@ -14,4 +14,5 @@ struct TOption {
 	TOption(const int to, const std::string& text);
 	TOption(const int to, const std::string& text, const std::vector<std::pair<std::string, std::string>>& price);
 	bool CanBeChoosen(const TPlayer& player) const;
+	void Pay(TPlayer& player) const;
 };

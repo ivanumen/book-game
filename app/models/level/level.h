@@ -18,7 +18,7 @@ public:
 	TLevel() = default;
 	TLevel(const std::string text, const std::vector<TOption> options, const std::vector<std::shared_ptr<TAction>>& actions);
 	const std::string& GetText() const;
-	const std::vector<TOption>& GetOptions();
-	const std::vector<std::shared_ptr<TAction>>& GetActions();
+	const std::vector<TOption>& GetOptions() const ;
+	const std::vector<std::shared_ptr<TAction>>& GetActions() const;
 };
 

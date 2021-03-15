@@ -73,15 +73,11 @@ void TGame::InitPlayer() {
     const auto resultDice2 = NDice::usingD6();
     Player.LockLuck(resultDice1);
     Player.LockLuck(resultDice2);
-    std::cout << "Имя игрока: " << Player.GetName() << std::endl;
-    std::cout << "Характеристики игрока" << std::endl;
-    std::cout << "Сила: " << Player.GetStrength() << " Ловкость: " << Player.GetAgility() << " Харизма: " << Player.GetCharisma() << std::endl;
-    std::cout << "Таблица удачи";
-    Player.WriteLuck();
     Player.SetGold(15);
     Player.SetFlask(2);
     Player.ResizeItems(7);
     Player.AddItem(0, foodX3);
+    NPlayerView::WritePlayer(Player);
     InitSpells();
 }
 
@@ -153,7 +149,7 @@ void TGame::Run() {
         auto level = Levels[CurrentLevel];
         std::vector<std::string> options;
         const auto& levelOptions = level.GetOptions();
-        for (const auto& option : level.GetOptions()) {
+        for (const auto& option : levelOptions) {
             if (option.CanBeChoosen(Player)) {
                 options.push_back(option.Text);
             }
@@ -172,22 +168,21 @@ void TGame::Run() {
             std::cout << std::endl;
 
             std::cout << level.GetText() << std::endl;
-            TMenu menu(options, { 0, NConsoleEditor::GetCursorPosition().Y }, { 100, static_cast<int>(options.size()) }, { (int)('i'), (int)('o'), (int)('p'), 8 });
+            TMenu menu(options, { 0, NConsoleEditor::GetCursorPosition().Y }, { 100, static_cast<int>(options.size()) }, { I, O, P, Backspace });
             int key;
             option = menu.Show(key);
             if (option == -1) {
                 if (NConsoleEditor::IsO(key)) {
                     NConsoleEditor::Clear();
                     NPlayerView::WritePlayer(Player);
-                    NConsoleEditor::Getch();
                 }
                 if (NConsoleEditor::IsP(key)) {
                     NConsoleEditor::Clear();
                     NSpellView::WriteSpells(Player);
-                    NConsoleEditor::Getch();
                 }
             }
         }
+        levelOptions[option].Pay(Player);
         CurrentLevel = levelOptions[option].To;
     }
 }

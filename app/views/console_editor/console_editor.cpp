@@ -46,39 +46,39 @@ void NConsoleEditor::Clear() {
 }
 
 bool NConsoleEditor::IsEnter(const int key) {
-    return key == 13;
+    return key == Enter;
 }
 
 bool NConsoleEditor::IsLeft(const int key) {
-    return key == 1075;
+    return key == Left;
 }
 
 bool NConsoleEditor::IsRight(const int key) {
-    return key == 1077;
+    return key == Right;
 }
 
 bool NConsoleEditor::IsUp(const int key) {
-    return key == 1072;
+    return key == Up;
 }
 
 bool NConsoleEditor::IsDown(const int key) {
-    return key == 1080;
+    return key == Down;
 }
 
 bool NConsoleEditor::IsI(const int key) {
-    return key == 105;
+    return key == I;
 }
 
 bool NConsoleEditor::IsO(const int key) {
-    return key == 111;
+    return key == O;
 }
 
 bool NConsoleEditor::IsP(const int key) {
-    return key == 112;
+    return key == P;
 }
 
 bool NConsoleEditor::IsBackspace(const int key) {
-    return key == 8;
+    return key == Backspace;
 }
 
 TPoint NConsoleEditor::GetCursorPosition() {
@@ -89,4 +89,8 @@ TPoint NConsoleEditor::GetCursorPosition() {
     }
 
     return TPoint(cbsi.dwCursorPosition.X, cbsi.dwCursorPosition.Y);
+}
+
+void NConsoleEditor::WaitForBackspace() {
+    while (!IsBackspace(Getch()));
 }

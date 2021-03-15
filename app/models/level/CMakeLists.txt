@@ -2,7 +2,7 @@ add_library(level STATIC
 	level.cpp
 )
 
-target_link_libraries(level STATIC
+target_link_libraries(level PUBLIC
 	actions
 	option_control
 )

@@ -38,7 +38,7 @@ public:
 	int GetCharisma() const;
 	int GetGold() const;
 	int GetFlask() const;
-	std::vector<std::pair<std::string, int>> GetSpells() const;
+	const std::vector<std::pair<std::string, int>>& GetSpells() const;
 	void IncreaseStrength(const int strength);
 	bool CheckLuck(const int index) const;
 	void WriteLuck() const;

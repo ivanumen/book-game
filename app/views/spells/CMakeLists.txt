@@ -4,4 +4,5 @@ add_library(spell_views STATIC
 
 target_link_libraries(spell_views PUBLIC
 	player
+	console_editor
 )

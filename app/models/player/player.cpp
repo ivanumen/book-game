@@ -72,7 +72,7 @@ int TPlayer::GetFlask() const {
 	return Flask;
 }
 
-std::vector<std::pair<std::string, int>> TPlayer::GetSpells() const {
+const std::vector<std::pair<std::string, int>>& TPlayer::GetSpells() const {
 	return Spells;
 }
 
@@ -177,7 +177,7 @@ void TPlayer::DropItem(const int index) {
 }
 
 bool TPlayer::HasSpell(const std::string& spell) const {
-	for (const auto& elem : GetSpells()) {
+	for (const auto& elem : Spells) {
 		if (elem.first == spell) {
 			return elem.second > 0;
 		}
@@ -186,7 +186,7 @@ bool TPlayer::HasSpell(const std::string& spell) const {
 }
 
 void TPlayer::CastSpell(const std::string& spell) {
-	for (auto& elem : GetSpells()) {
+	for (auto& elem : Spells) {
 		if (elem.first == spell) {
 			elem.second--;
 			if (elem.second == -1) {
@@ -199,7 +199,7 @@ void TPlayer::CastSpell(const std::string& spell) {
 }
 
 void TPlayer::AddSpell(const std::string& spell) {
-	for (auto& elem : GetSpells()) {
+	for (auto& elem : Spells) {
 		if (elem.first == spell) {
 			elem.second++;
 			return;
