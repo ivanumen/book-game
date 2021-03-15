@@ -6,7 +6,10 @@
 #include "app/views/console_editor/console_editor.h"
 #include "app/views/menu/menu.h"
 #include "app/views/player/player_views.h"
+<<<<<<< HEAD
 #include "app/views/spells/spell_views.h"
+=======
+>>>>>>> master
 #include "app/util/dice/dice.h"
 #include "app/util/json/json.h"
 #include "app/util/decoder/decoder.h"
@@ -14,9 +17,12 @@
 #include "app/models/level/level.h"
 #include "app/models/items/item.h"
 #include "app/models/items/food.h"
+<<<<<<< HEAD
 #include "app/controllers/option/option_control.h"
 #include "app/controllers/actions/action.h"
 #include "app/controllers/actions/add_strength.h"
+=======
+>>>>>>> master
 
 
 void TGame::Start() {
@@ -77,7 +83,10 @@ void TGame::InitPlayer() {
     Player.SetFlask(2);
     Player.ResizeItems(7);
     Player.AddItem(0, foodX3);
+<<<<<<< HEAD
     NPlayerView::WritePlayer(Player);
+=======
+>>>>>>> master
     InitSpells();
 }
 
@@ -146,6 +155,12 @@ int TGame::InitSpells() {
 
 void TGame::Run() {
     while (1) {
+<<<<<<< HEAD
+=======
+        NConsoleEditor::Clear();
+        std::cout << "Нажмите I(ш) для вызова инвентаря" << " " << "Нажмите O(щ) для вызова окна характеристик" << " " << "Нажмите P(з) для вызова книги заклинаний" << std::endl;
+        std::cout << std::endl;
+>>>>>>> master
         auto level = Levels[CurrentLevel];
         std::vector<std::string> options;
         const auto& levelOptions = level.GetOptions();
@@ -182,7 +197,26 @@ void TGame::Run() {
                 }
             }
         }
+<<<<<<< HEAD
         levelOptions[option].Pay(Player);
         CurrentLevel = levelOptions[option].To;
+=======
+        std::cout << level.GetText() << std::endl;
+        TMenu menu(options, { 0, NConsoleEditor::GetCursorPosition().Y }, { 100, static_cast<int>(options.size()) }, { (int)('i'), (int)('o'), (int)('p'), 8 });
+        int key;
+        int option = menu.Show(key);
+        if (option == -1) {
+            if (NConsoleEditor::IsO(key)) {
+                NConsoleEditor::Clear();
+                NPlayerView::WritePlayer(Player);
+                if (NConsoleEditor::IsBackspace(key)) {
+                    Run();
+                }
+            }
+        }
+        else {
+            CurrentLevel = level.GetOptions()[option].first;
+        }
+>>>>>>> master
     }
 }

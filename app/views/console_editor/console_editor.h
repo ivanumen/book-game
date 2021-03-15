@@ -62,7 +62,10 @@ namespace NConsoleEditor {
 
     bool IsBackspace(const int key);
 
+<<<<<<< HEAD
     void WaitForBackspace();
 
+=======
+>>>>>>> master
     TPoint GetCursorPosition();
 };

@@ -14,6 +14,9 @@ target_link_libraries(game PUBLIC
 	items
 	spell_views
 	player_views
+<<<<<<< HEAD
 	actions
 	option_control
+=======
+>>>>>>> master
 )

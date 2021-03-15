@@ -81,6 +81,22 @@ bool NConsoleEditor::IsBackspace(const int key) {
     return key == Backspace;
 }
 
+bool NConsoleEditor::IsI(const int key) {
+    return key == 105;
+}
+
+bool NConsoleEditor::IsO(const int key) {
+    return key == 111;
+}
+
+bool NConsoleEditor::IsP(const int key) {
+    return key == 112;
+}
+
+bool NConsoleEditor::IsBackspace(const int key) {
+    return key == 8;
+}
+
 TPoint NConsoleEditor::GetCursorPosition() {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     CONSOLE_SCREEN_BUFFER_INFO cbsi;

@@ -55,7 +55,11 @@ public:
 	void AddItem(const int index, TItem* item);
 	void ResizeItems(const int size);
 	void DropItem(const int index);
+<<<<<<< HEAD
 	bool HasSpell(const std::string& spell) const;
 	void CastSpell(const std::string& spell);
 	void AddSpell(const std::string& spell);
+=======
+	void Inventory() const;
+>>>>>>> master
 };
