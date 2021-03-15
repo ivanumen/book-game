@@ -176,7 +176,6 @@ void TPlayer::DropItem(const int index) {
 	Items[index] = nullptr;
 }
 
-<<<<<<< HEAD
 bool TPlayer::HasSpell(const std::string& spell) const {
 	for (const auto& elem : Spells) {
 		if (elem.first == spell) {
@@ -208,11 +207,3 @@ void TPlayer::AddSpell(const std::string& spell) {
 	}
 	throw "Not this spell";
 }
-=======
-void TPlayer::Inventory() const {
-	for (const auto& item : Items) {
-
-	}
-}
-
->>>>>>> master

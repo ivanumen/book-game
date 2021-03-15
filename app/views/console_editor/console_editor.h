@@ -2,17 +2,17 @@
 
 #include "app/util/point/point.h"
 
-const int Enter = 13;
-const int Left = 1075;
-const int Right = 1077;
-const int Up = 1072;
-const int Down = 1080;
-const int I = 105;
-const int O = 111;
-const int P = 112;
-const int Backspace = 8;
-
 namespace NConsoleEditor {
+    const int EnterKey = 13;
+    const int LeftKey = 1075;
+    const int RightKey = 1077;
+    const int UpKey = 1072;
+    const int DownKey = 1080;
+    const int IKey = 105;
+    const int OKey = 111;
+    const int PKey = 112;
+    const int BackspaceKey = 8;
+
     enum ConsoleColor {
         Black = 0,
         Blue = 1,
@@ -62,10 +62,7 @@ namespace NConsoleEditor {
 
     bool IsBackspace(const int key);
 
-<<<<<<< HEAD
     void WaitForBackspace();
 
-=======
->>>>>>> master
     TPoint GetCursorPosition();
 };

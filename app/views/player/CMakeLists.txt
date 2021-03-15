@@ -4,8 +4,5 @@ add_library(player_views STATIC
 
 target_link_libraries(player_views PUBLIC 
 	player
-<<<<<<< HEAD
 	console_editor
-=======
->>>>>>> master
 )

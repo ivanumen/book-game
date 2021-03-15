@@ -10,11 +10,7 @@ int main()
     NConsoleEditor::SetColor(NConsoleEditor::Yellow);
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
-<<<<<<< HEAD
     srand(static_cast<unsigned int>(time(nullptr)));
-=======
-    srand(time(nullptr));
->>>>>>> master
     TGame game;
     game.Start();
     return 0;
