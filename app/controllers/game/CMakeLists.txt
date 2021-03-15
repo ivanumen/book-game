@@ -14,4 +14,6 @@ target_link_libraries(game PUBLIC
 	items
 	spell_views
 	player_views
+	actions
+	option_control
 )

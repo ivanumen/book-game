@@ -72,6 +72,10 @@ int TPlayer::GetFlask() const {
 	return Flask;
 }
 
+const std::vector<std::pair<std::string, int>>& TPlayer::GetSpells() const {
+	return Spells;
+}
+
 void TPlayer::IncreaseStrength(const int strength) {
 	Strength = std::min(MaxStrength, Strength + strength);
 }
@@ -172,9 +176,34 @@ void TPlayer::DropItem(const int index) {
 	Items[index] = nullptr;
 }
 
-void TPlayer::Inventory() const {
-	for (const auto& item : Items) {
-
+bool TPlayer::HasSpell(const std::string& spell) const {
+	for (const auto& elem : Spells) {
+		if (elem.first == spell) {
+			return elem.second > 0;
+		}
 	}
+	throw "Not this spell";
 }
 
+void TPlayer::CastSpell(const std::string& spell) {
+	for (auto& elem : Spells) {
+		if (elem.first == spell) {
+			elem.second--;
+			if (elem.second == -1) {
+				break;
+			}
+			return;
+		}
+	}
+	throw "Not this spell";
+}
+
+void TPlayer::AddSpell(const std::string& spell) {
+	for (auto& elem : Spells) {
+		if (elem.first == spell) {
+			elem.second++;
+			return;
+		}
+	}
+	throw "Not this spell";
+}

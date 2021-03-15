@@ -1,10 +1,12 @@
 #include "game.h"
 #include <cstdio>
 #include <windows.h>
+#include <memory>
 
 #include "app/views/console_editor/console_editor.h"
 #include "app/views/menu/menu.h"
 #include "app/views/player/player_views.h"
+#include "app/views/spells/spell_views.h"
 #include "app/util/dice/dice.h"
 #include "app/util/json/json.h"
 #include "app/util/decoder/decoder.h"
@@ -12,6 +14,9 @@
 #include "app/models/level/level.h"
 #include "app/models/items/item.h"
 #include "app/models/items/food.h"
+#include "app/controllers/option/option_control.h"
+#include "app/controllers/actions/action.h"
+#include "app/controllers/actions/add_strength.h"
 
 
 void TGame::Start() {
@@ -27,11 +32,27 @@ void TGame::ReadConfig() {
     std::string configStr = NFileEditor::ReadFile("../config.json");
     NJson::TJsonValue config = NJson::TJsonValue::parse(NDecoder::ToUtf8(configStr));
     for (auto levelInfo : config) {
-        std::vector<std::pair<int, std::string>> options;
-        for (auto to : levelInfo["options"]) {
-            options.emplace_back(to["to"], NDecoder::FromUtf8(to["text"]));
+        std::vector<TOption> options;
+        std::vector<std::shared_ptr<TAction>> actions;
+        for (const auto& option : levelInfo["options"]) {
+            std::vector<std::pair<std::string, std::string>> prices;
+            if (option.find("price") != option.end()) {
+                for (const auto& price : option["price"]) {
+                    prices.emplace_back(NDecoder::FromUtf8(price["type"]), NDecoder::FromUtf8(price["value"]));
+                }
+            }
+            options.emplace_back(option["to"], NDecoder::FromUtf8(option["text"]), prices);
         }
-        TLevel level(NDecoder::FromUtf8(levelInfo["text"]), options);
+        if (levelInfo.find("actions") != levelInfo.end()) {
+            for (const auto& action : levelInfo["actions"]) {
+                std::shared_ptr<TAction> actionPtr;
+                if (action["name"] == "add_strength") {
+                    actionPtr = std::make_shared<TAddStrengthAction>(action["amount"]); //  new TAddStrengthAction(action["amount"]);
+                }
+                actions.emplace_back(actionPtr);
+            }
+        }
+        TLevel level(NDecoder::FromUtf8(levelInfo["text"]), options, actions);
         Levels[levelInfo["id"]] = level;
     }
 }
@@ -52,15 +73,11 @@ void TGame::InitPlayer() {
     const auto resultDice2 = NDice::usingD6();
     Player.LockLuck(resultDice1);
     Player.LockLuck(resultDice2);
-    std::cout << "Имя игрока: " << Player.GetName() << std::endl;
-    std::cout << "Характеристики игрока" << std::endl;
-    std::cout << "Сила: " << Player.GetStrength() << " Ловкость: " << Player.GetAgility() << " Харизма: " << Player.GetCharisma() << std::endl;
-    std::cout << "Таблица удачи";
-    Player.WriteLuck();
     Player.SetGold(15);
     Player.SetFlask(2);
     Player.ResizeItems(7);
     Player.AddItem(0, foodX3);
+    NPlayerView::WritePlayer(Player);
     InitSpells();
 }
 
@@ -121,6 +138,7 @@ int TGame::InitSpells() {
             }
             else {
                 std::cout << "Наберите 10 заклинаний" << std::endl;
+                NConsoleEditor::Getch();
             }
         }
     }
@@ -129,28 +147,43 @@ int TGame::InitSpells() {
 void TGame::Run() {
     while (1) {
         NConsoleEditor::Clear();
-        std::cout << "Нажмите I(ш) для вызова инвентаря" << " " << "Нажмите O(щ) для вызова окна характеристик" << " " << "Нажмите P(з) для вызова книги заклинаний" << std::endl;
-        std::cout << std::endl;
         auto level = Levels[CurrentLevel];
         std::vector<std::string> options;
-        for (const auto& option : level.GetOptions()) {
-            options.push_back(option.second);
+        const auto& levelOptions = level.GetOptions();
+        for (const auto& option : levelOptions) {
+            if (option.CanBeChoosen(Player)) {
+                options.push_back(option.Text);
+            }
+            else {
+                options.push_back("<?????>");
+            }
         }
-        std::cout << level.GetText() << std::endl;
-        TMenu menu(options, { 0, NConsoleEditor::GetCursorPosition().Y }, { 100, static_cast<int>(options.size()) }, { (int)('i'), (int)('o'), (int)('p'), 8 });
-        int key;
-        int option = menu.Show(key);
-        if (option == -1) {
-            if (NConsoleEditor::IsO(key)) {
-                NConsoleEditor::Clear();
-                NPlayerView::WritePlayer(Player);
-                if (NConsoleEditor::IsBackspace(key)) {
-                    Run();
+        for (const auto& action : level.GetActions()) {
+            action->Do(Player);
+        }
+
+        int option = -1;
+        while (option == -1 || !levelOptions[option].CanBeChoosen(Player)) {
+            NConsoleEditor::Clear();
+            std::cout << "Нажмите I(ш) для вызова инвентаря" << " " << "Нажмите O(щ) для вызова окна характеристик" << " " << "Нажмите P(з) для вызова книги заклинаний" << std::endl;
+            std::cout << std::endl;
+
+            std::cout << level.GetText() << std::endl;
+            TMenu menu(options, { 0, NConsoleEditor::GetCursorPosition().Y }, { 100, static_cast<int>(options.size()) }, { NConsoleEditor::IKey, NConsoleEditor::OKey, NConsoleEditor::PKey, NConsoleEditor::BackspaceKey });
+            int key;
+            option = menu.Show(key);
+            if (option == -1) {
+                if (NConsoleEditor::IsO(key)) {
+                    NConsoleEditor::Clear();
+                    NPlayerView::WritePlayer(Player);
+                }
+                if (NConsoleEditor::IsP(key)) {
+                    NConsoleEditor::Clear();
+                    NSpellView::WriteSpells(Player);
                 }
             }
         }
-        else {
-            CurrentLevel = level.GetOptions()[option].first;
-        }
+        levelOptions[option].Pay(Player);
+        CurrentLevel = levelOptions[option].To;
     }
 }
